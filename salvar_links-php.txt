@@ -1,0 +1,16 @@
+<?php
+header('Content-Type: application/json');
+
+$data = json_decode(file_get_contents('php://input'), true);
+
+$urlFinal = $data['urlFinal'];
+$linkWhite = $data['linkWhite'];
+$linkBlack = $data['linkBlack'];
+
+// Aqui você salvaria esses dados em um banco de dados ou arquivo
+// Por simplicidade, vamos apenas simular o salvamento
+
+$success = true; // Simula salvamento bem-sucedido
+
+echo json_encode(['success' => $success]);
+?>

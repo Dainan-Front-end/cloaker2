@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Link Cloaker</title>
+    <style>
+        /* Seu CSS aqui */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Gerador de Link Cloaker</h1>
+        <div class="input-group">
+            <label for="linkWhite">LINK 1 - WHITE:</label>
+            <input type="text" id="linkWhite" placeholder="https://exemplo.com/white">
+        </div>
+        <div class="input-group">
+            <label for="linkBlack">LINK 2 - BLACK:</label>
+            <input type="text" id="linkBlack" placeholder="https://exemplo.com/black">
+        </div>
+        <div class="input-group">
+            <label for="urlFinal">DIGITE QUAL VAI SER O FINAL DA URL:</label>
+            <input type="text" id="urlFinal" placeholder="meu-link-personalizado">
+        </div>
+        <button onclick="gerarLink()">Gerar Link</button>
+        <div id="linkGerado"></div>
+    </div>
+
+    <script>
+        function gerarLink() {
+            const linkWhite = document.getElementById('linkWhite').value;
+            const linkBlack = document.getElementById('linkBlack').value;
+            const urlFinal = document.getElementById('urlFinal').value;
+            
+            if (!linkWhite || !linkBlack || !urlFinal) {
+                alert('Por favor, preencha todos os campos.');
+                return;
+            }
+
+            const dominio = 'seudominio.com'; // Substitua pelo seu domínio real
+            const linkGerado = `https://${dominio}/${urlFinal}`;
+
+            // Enviar dados para o backend
+            fetch('salvar_links.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    urlFinal: urlFinal,
+                    linkWhite: linkWhite,
+                    linkBlack: linkBlack
+                })
+            }).then(response => response.json())
+              .then(data => {
+                  if (data.success) {
+                      document.getElementById('linkGerado').innerHTML = `
+                          <strong>LINK PERSONALIZADO PARA USAR:</strong><br>
+                          <a href="${linkGerado}" target="_blank">${linkGerado}</a>
+                      `;
+                  } else {
+                      alert('Erro ao salvar os links. Tente novamente.');
+                  }
+              });
+        }
+    </script>
+</body>
+</html>
